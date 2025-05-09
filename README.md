@@ -85,3 +85,7 @@ analyzer.run()
 + **Batch processing support**: Designed CLI and parallel interfaces to support processing of large numbers of structure or trajectory files;
 
 + **Feature output for machine learning**: Output Betti number spectrum, cyclic structure position, etc.
+
+For comprehensive documentation, including installation, usage, and API references, please visit:  
+[https://chem-topo.readthedocs.io/en/latest/](https://chem-topo.readthedocs.io/en/latest/)
+
