@@ -1,7 +1,9 @@
 version: 2
 build:
-  os: Windows
   tools:
     python: "3.11"
 sphinx:
    configuration: docs/source/conf.py
+python:
+  install:
+    - requirements: docs/requirements.txt
