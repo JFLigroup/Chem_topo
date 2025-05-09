@@ -6,9 +6,7 @@
 chem_topo documentation
 =======================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+`chem_topo` is a tool for topological analysis of nanomaterials and surfaces, combining persistent homology, path homology, and feature extraction methods based on geometry and graph theory. The tool is particularly suitable for analyzing adsorption sites in atomic structures, topological invariants, and their significance in surface catalysis.
 
 
 .. toctree::
