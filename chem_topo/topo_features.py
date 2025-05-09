@@ -1054,8 +1054,6 @@ class SimplicialComplexLaplacian(object):
     def boundary_to_laplacian_matrix(self, boundary_matrix_dict: dict) -> dict:
         """
         Construct the Laplacian matrices of the simplicial complex using its boundary matrices.
-        The Laplacian is given by:
-            L = B_{n+1} * B_{n+1}^T + B_n^T * B_n
         
         Parameters:
         -----------
@@ -1289,9 +1287,6 @@ class SimplicialComplexLaplacian(object):
     ) -> np.array:
         """
         Compute 0-dimensional (classical graph) Laplacian eigenvalues across a filtration.
-        This is a simplified version of the persistent Laplacian pipeline that only uses:
-            L = D - A
-        where L is the graph Laplacian, D is the degree matrix, and A is the adjacency matrix.
 
         Parameters:
         -----------
