@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chem_topo.post_process &mdash; chem_topo 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            chem_topo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">chem_topo</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">chem_topo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">chem_topo.post_process</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for chem_topo.post_process</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">homcloud.interface</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">read</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase</span><span class="w"> </span><span class="kn">import</span> <span class="n">Atoms</span>
+
+<div class="viewcode-block" id="AlphaComplexAnalyzer">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.post_process.AlphaComplexAnalyzer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AlphaComplexAnalyzer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to perform Alpha Filtration and persistent homology analysis</span>
+<span class="sd">    on atomic trajectory data using the HomCloud library.</span>
+
+<span class="sd">    This class focuses on extracting β1 (1-dimensional) topological features</span>
+<span class="sd">    and identifying corresponding atomic coordinates involved in persistent cycles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the analyzer with dataset path and file information.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        - folder_path : str</span>
+<span class="sd">                Path to the folder containing the XDATCAR trajectory file.</span>
+
+<span class="sd">        - file_name :str </span>
+<span class="sd">                Name of the trajectory file.</span>
+
+<span class="sd">        - batch_size : int</span>
+<span class="sd">                Number of frames to process per batch (for parallel execution).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">folder_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_frames</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the last 15,000 frames from the trajectory file using ASE.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        - Atoms : List </span>
+<span class="sd">                A list of ASE Atoms objects representing the frames.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_frames</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;vasp-xdatcar&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">15000</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">all_frames</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_remove_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="n">Atoms</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove atoms of a specific element type from an ASE Atoms object.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        - atoms : ase.Atoms</span>
+<span class="sd">                The atomic structure to modify.</span>
+
+<span class="sd">        - symbol : str</span>
+<span class="sd">                The chemical symbol of atoms to be removed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        - Atoms : ase.Atoms</span>
+<span class="sd">                The filtered atomic structure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">atoms</span><span class="p">[[</span><span class="n">atom</span><span class="o">.</span><span class="n">index</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span> <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">symbol</span> <span class="o">==</span> <span class="n">symbol</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">atoms</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_seek_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">point_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Match coordinates of interest (from stable volume) to original input points.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        - pos : np.ndarray</span>
+<span class="sd">                Original point cloud with weights as an appended dimension.</span>
+
+<span class="sd">        - point_list : List[np.ndarray]</span>
+<span class="sd">                Points returned from stable_volume analysis.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        - List[int]</span>
+<span class="sd">                Indices of matched points in the original dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)):</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">index</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">target_point</span> <span class="ow">in</span> <span class="n">point_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">points</span> <span class="o">-</span> <span class="n">target_point</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span>  <span class="n">frame_index</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span><span class="n">remove_atoms_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Pt&#39;</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform persistent homology analysis on a single frame.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        - atoms : ase.Atoms</span>
+<span class="sd">                ASE object for a single frame.</span>
+
+<span class="sd">        - remove_atoms_symbols : list</span>
+<span class="sd">                list of symbols to remove.</span>
+
+<span class="sd">        - frame_index : int</span>
+<span class="sd">                Global index of the current frame.</span>
+
+<span class="sd">        - task_id : int </span>
+<span class="sd">                Task index used to name intermediate files.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        - List : [frame_index, persistence data with associated point indices]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">remove_atoms_symbols</span><span class="p">:</span>
+                <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_positions</span><span class="p">())[:</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">weight</span><span class="p">[:</span><span class="mi">48</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.175</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">weight</span><span class="p">[</span><span class="mi">48</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.775</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">pos_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">pos</span><span class="p">,</span> <span class="n">weight</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+
+        <span class="n">pd_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pdgm_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;pointcloud_</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">.pdgm&quot;</span>
+            <span class="n">hc</span><span class="o">.</span><span class="n">PDList</span><span class="o">.</span><span class="n">from_alpha_filtration</span><span class="p">(</span><span class="n">pos_weighted</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_to</span><span class="o">=</span><span class="n">pdgm_path</span><span class="p">,</span> <span class="n">save_boundary_map</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pdlist</span> <span class="o">=</span> <span class="n">hc</span><span class="o">.</span><span class="n">PDList</span><span class="p">(</span><span class="n">pdgm_path</span><span class="p">)</span>
+            <span class="n">pd1</span> <span class="o">=</span> <span class="n">pdlist</span><span class="o">.</span><span class="n">dth_diagram</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">birth</span><span class="p">,</span> <span class="n">death</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pd1</span><span class="o">.</span><span class="n">births</span><span class="p">,</span> <span class="n">pd1</span><span class="o">.</span><span class="n">deaths</span><span class="p">):</span>
+                <span class="n">pair</span> <span class="o">=</span> <span class="n">pd1</span><span class="o">.</span><span class="n">nearest_pair_to</span><span class="p">(</span><span class="n">birth</span><span class="p">,</span> <span class="n">death</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">pair</span><span class="o">.</span><span class="n">lifetime</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">stable_volume</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">stable_volume</span><span class="p">(</span><span class="n">pair</span><span class="o">.</span><span class="n">lifetime</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span>
+                <span class="n">point_list</span> <span class="o">=</span> <span class="n">stable_volume</span><span class="o">.</span><span class="n">boundary_points</span><span class="p">()</span>
+                <span class="n">pd_data</span> <span class="o">+=</span> <span class="p">[</span><span class="n">birth</span><span class="p">,</span> <span class="n">death</span><span class="p">]</span>
+                <span class="n">pd_data</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seek_point</span><span class="p">(</span><span class="n">pos_weighted</span><span class="p">,</span> <span class="n">point_list</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task_id </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">: Error at iteration </span><span class="si">{</span><span class="n">frame_index</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">frame_index</span><span class="p">,</span> <span class="n">pd_data</span><span class="p">]</span>
+
+<div class="viewcode-block" id="AlphaComplexAnalyzer.run">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.post_process.AlphaComplexAnalyzer.run">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute persistent homology analysis for a batch of frames.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        - task_index : int</span>
+<span class="sd">                The current task index used to determine frame range.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">task_index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">task_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="n">frames_to_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frames_to_process</span><span class="p">):</span>
+            <span class="n">frame_id</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">i</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_frame</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">,</span> <span class="n">task_index</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task_id </span><span class="si">{</span><span class="n">task_index</span><span class="si">}</span><span class="s2">: Frame </span><span class="si">{</span><span class="n">frame_id</span><span class="si">}</span><span class="s2"> processed in </span><span class="si">{</span><span class="n">t1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">t1</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task_id </span><span class="si">{</span><span class="n">task_index</span><span class="si">}</span><span class="s2">: Frames </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> all finished.&quot;</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;result_</span><span class="si">{</span><span class="n">task_index</span><span class="si">}</span><span class="s1">.npy&#39;</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">))</span></div>
+</div>
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, zheng shisheng , zhang ximing.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

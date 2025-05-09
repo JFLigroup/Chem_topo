@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>``` &mdash; chem_topo 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            chem_topo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">```</a></li>
+<li><a class="reference internal" href="#id28">```</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">chem_topo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">```</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/main.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p># Chem_topo
+<cite>chem_topo</cite> is a tool for topological analysis of nanomaterials and surfaces, combining persistent homology, path homology, and feature extraction methods based on geometry and graph theory. The tool is particularly suitable for analyzing adsorption sites in atomic structures, topological invariants, and their significance in surface catalysis.
+<a href="#id1"><span class="problematic" id="id2">**</span></a>*
+## Project Introduction
+This project aims to assist in identifying and quantifying key structural features on material surfaces or in nanoclusters through topological data analysis methods. Capabilities include:</p>
+<ul class="simple">
+<li><p>Generate potential adsorption sites based on structure;</p></li>
+<li><p>Analyze topological changes in kinetic trajectories;</p></li>
+<li><p>Extract topological features for machine learning modeling.</p></li>
+</ul>
+<p><a href="#id3"><span class="problematic" id="id4">**</span></a>*
+## Code structure
+<a href="#id5"><span class="problematic" id="id6">``</span></a>`
+chem_topo/
+├── chem_topo/                  # Main Module
+│   ├── adsorption_sites.py         # Adsorption site identification
+│   ├── persistent_path_homology_cli.py  # CLI entry, calculate path homology features
+│   ├── post_process.py             # Post-processing and visualization of coherence results
+│   ├── topo_features.py            # Core topological feature extraction classes (including PathHomology, etc.)
+│   ├── utils.py                    # General function tools
+├── examples/
+│   ├── 711.vasp, Pt55.vasp,PtKOH   # Example structure file
+│   ├── result_0.npy                    # Run output example
+├── docs/                      # Documentation building template
+├── test/                      # Unit Testing
+│   ├── pathhomology_test.py</p>
+<section id="id11">
+<h1><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a><a class="headerlink" href="#id11" title="Link to this heading">¶</a></h1>
+<p>## Requirements
+This project relies on the following third-party libraries:
+<a href="#id12"><span class="problematic" id="id13">``</span></a>`
+pip install numpy scipy ase gudhi homcloud</p>
+<p><a href="#id14"><span class="problematic" id="id15">``</span></a>`
+Make sure you have installed:</p>
+<ul class="simple">
+<li><p>Python 3.7+</p></li>
+<li><p>ASE</p></li>
+<li><p>GUDHI</p></li>
+<li><p>HomCloud</p></li>
+</ul>
+<p><a href="#id16"><span class="problematic" id="id17">**</span></a>*
+## Instructions
+### 1. Calculation of adsorption sites
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">from</span> <span class="pre">chem_topo.adsorption_sites</span> <span class="pre">import</span> <span class="pre">ClusterAdsorptionSitesFinder</span>
+<span class="pre">finder</span> <span class="pre">=</span> <span class="pre">ClusterAdsorptionSitesFinder(atoms)</span>
+<span class="pre">sites</span> <span class="pre">=</span> <span class="pre">finder.get_surface_sites()</span>
+<span class="pre">`</span></code>
+### 2. Computing path coherence features
+Topological feature extraction can be performed from the command line
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">python</span> <span class="pre">chem_topo/persistent_path_homology_cli.py</span> <span class="pre">--data</span> <span class="pre">your_points.csv</span> <span class="pre">--filtration_type</span> <span class="pre">distance</span> <span class="pre">--max_path</span> <span class="pre">4</span>
+<span class="pre">`</span></code>
+Or use the PathHomology class directly to extract features of continuous homology, path homology, or angle homology
+<a href="#id18"><span class="problematic" id="id19">``</span></a>`
+from chem_topo.topo_features import PathHomology
+betti_nums = PathHomology(max_distance=5.0).persistent_path_homology(</p>
+<blockquote>
+<div><p>cloudpoints, points_weight, max_path, filtration=None)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>betti_nums = PathHomology().persistent_angle_path_homology(</dt><dd><p>cloudpoints, points_weight, max_path)</p>
+</dd>
+</dl>
+<p>betti_nums = PathHomology().persistent_homology(cloudpoints,max_path)
+<a href="#id20"><span class="problematic" id="id21">``</span></a>`
+### 3. Post-processing dynamics trajectories</p>
+<p><a href="#id22"><span class="problematic" id="id23">``</span></a>`
+from chem_topo.post_process import AlphaComplexAnalyzer
+analyzer = AlphaComplexAnalyzer(folder_path=’.’, file_name=’XDATCAR’)
+analyzer.run()</p>
+</section>
+<section id="id28">
+<h1><a href="#id24"><span class="problematic" id="id25">``</span></a><a href="#id26"><span class="problematic" id="id27">`</span></a><a class="headerlink" href="#id28" title="Link to this heading">¶</a></h1>
+<p>## Key functions
++ <strong>Adsorption site identification</strong>: Automatically identify possible adsorption sites on the surface and subsurface based on atomic distance, bond length, and geometric rules;</p>
+<ul class="simple">
+<li><p><strong>Topological feature extraction</strong>: Supports multiple path homology features such as distance filtering, angle filtering, and path length filtering;</p></li>
+<li><p><strong>Persistent homology analysis</strong>: Extract topological invariants in trajectories through HomCloud to track structural evolution;</p></li>
+<li><p><strong>Batch processing support</strong>: Designed CLI and parallel interfaces to support processing of large numbers of structure or trajectory files;</p></li>
+<li><p><strong>Feature output for machine learning</strong>: Output Betti number spectrum, cyclic structure position, etc.</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, zheng shisheng , zhang ximing , liu hengshu , liang gehao.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

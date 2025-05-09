@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chem_topo.utils &mdash; chem_topo 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            chem_topo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">chem_topo</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">chem_topo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">chem_topo.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for chem_topo.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">least_squares</span><span class="p">,</span><span class="n">minimize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">atomic_numbers</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">,</span><span class="n">vdw_radii</span>
+
+<div class="viewcode-block" id="objective">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.objective">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function calculates the difference between the distance from a point `x` </span>
+<span class="sd">    to a set of given points `points` and the target radius, weighted by `weights`,</span>
+<span class="sd">    for use in least squares optimization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute the Euclidean distance between the point `x` and each point in the `points` array</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">points</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the weighted squared difference between the distances and the target radius</span>
+    <span class="k">return</span> <span class="n">weights</span> <span class="o">*</span> <span class="p">((</span><span class="n">distances</span> <span class="o">-</span> <span class="n">radius</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+
+              
+                                    
+<div class="viewcode-block" id="calculate_centroid">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.calculate_centroid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">cov_radii</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finding the outer center (centroid) of atomic combinations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - points : ndarray</span>
+<span class="sd">        The Cartesian coordinates of atomic combinations.</span>
+<span class="sd">    - cov_radii : ndarray</span>
+<span class="sd">        The covalent radii of the atoms, used as weights for optimization.</span>
+<span class="sd">    - radius : float</span>
+<span class="sd">        The target distance from the outer center to each point.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    - coordinates of the centroid : ndarray</span>
+<span class="sd">        The coordinates of the calculated centroid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Calculate weights based on the covalent radii normalized by their sum</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">cov_radii</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cov_radii</span><span class="p">)</span>
+
+    <span class="c1"># Compute an initial guess for the centroid as the mean of the input points</span>
+    <span class="n">initial_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Perform least-squares optimization to find the centroid</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">least_squares</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">radius</span><span class="p">)),</span>  <span class="c1"># Minimize the square root of the objective function</span>
+        <span class="n">initial_guess</span><span class="p">,</span>                                             <span class="c1"># Initial guess for the optimization</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">,</span>                                               <span class="c1"># Use the Levenberg-Marquardt algorithm</span>
+        <span class="n">max_nfev</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>                                               <span class="c1"># Limit the number of function evaluations to 50</span>
+        <span class="n">ftol</span><span class="o">=</span><span class="mf">1e-4</span>                                                  <span class="c1"># Set the tolerance for the optimization</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Return the optimized coordinates of the centroid</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span></div>
+
+
+
+<div class="viewcode-block" id="get_cutoffs">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.get_cutoffs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cutoffs</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">metal_elements</span><span class="p">,</span> <span class="n">mult</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate cutoff distances for atoms based on their types and a scaling multiplier.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    - atoms : ASE Atoms object</span>
+<span class="sd">        List of atoms in the structure.</span>
+<span class="sd">    - metal_elements : list </span>
+<span class="sd">        List of elements considered as metals.</span>
+<span class="sd">    - mult : float </span>
+<span class="sd">        Scaling multiplier for the cutoff distances (default is 1.1).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    - cutoffs :  list of float</span>
+<span class="sd">        List of calculated cutoff distances.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cutoffs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Initialize a list to store cutoff distances</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">symbol</span>  <span class="c1"># Get the atomic symbol of the current atom</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">metal_elements</span><span class="p">:</span>
+            <span class="c1"># Use the covalent radius for metal elements</span>
+            <span class="n">cutoff</span> <span class="o">=</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">atomic_numbers</span><span class="p">[</span><span class="n">symbol</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use the van der Waals radius for non-metal elements</span>
+            <span class="n">cutoff</span> <span class="o">=</span> <span class="n">vdw_radii</span><span class="p">[</span><span class="n">atomic_numbers</span><span class="p">[</span><span class="n">symbol</span><span class="p">]]</span>
+        
+        <span class="c1"># Handle missing or invalid data by setting a default value</span>
+        <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cutoff</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cutoff</span> <span class="o">=</span> <span class="mf">1.5</span>  <span class="c1"># Default value, can be adjusted as needed</span>
+
+        <span class="c1"># Scale the cutoff distance by the multiplier</span>
+        <span class="n">cutoff</span> <span class="o">*=</span> <span class="n">mult</span>
+        <span class="n">cutoffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cutoff</span><span class="p">)</span>  <span class="c1"># Append the scaled cutoff to the list</span>
+
+    <span class="k">return</span> <span class="n">cutoffs</span>  <span class="c1"># Return the list of cutoff distances</span></div>
+
+
+<span class="c1">#Set the metal atoms.</span>
+<span class="n">metal_elements</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Li&quot;</span><span class="p">,</span> <span class="s2">&quot;Be&quot;</span><span class="p">,</span> <span class="s2">&quot;Na&quot;</span><span class="p">,</span> <span class="s2">&quot;Mg&quot;</span><span class="p">,</span> <span class="s2">&quot;Al&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="s2">&quot;Ca&quot;</span><span class="p">,</span> <span class="s2">&quot;Sc&quot;</span><span class="p">,</span> <span class="s2">&quot;Ti&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="s2">&quot;Cr&quot;</span><span class="p">,</span> <span class="s2">&quot;Mn&quot;</span><span class="p">,</span> <span class="s2">&quot;Fe&quot;</span><span class="p">,</span> <span class="s2">&quot;Co&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Ni&quot;</span><span class="p">,</span> <span class="s2">&quot;Cu&quot;</span><span class="p">,</span> <span class="s2">&quot;Zn&quot;</span><span class="p">,</span> <span class="s2">&quot;Rb&quot;</span><span class="p">,</span> <span class="s2">&quot;Sr&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Zr&quot;</span><span class="p">,</span> <span class="s2">&quot;Nb&quot;</span><span class="p">,</span> <span class="s2">&quot;Mo&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span><span class="p">,</span> <span class="s2">&quot;Ru&quot;</span><span class="p">,</span> <span class="s2">&quot;Rh&quot;</span><span class="p">,</span> <span class="s2">&quot;Pd&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Cd&quot;</span><span class="p">,</span> <span class="s2">&quot;Cs&quot;</span><span class="p">,</span> <span class="s2">&quot;Ba&quot;</span><span class="p">,</span> <span class="s2">&quot;La&quot;</span><span class="p">,</span> <span class="s2">&quot;Ce&quot;</span><span class="p">,</span> <span class="s2">&quot;Pr&quot;</span><span class="p">,</span> <span class="s2">&quot;Nd&quot;</span><span class="p">,</span> <span class="s2">&quot;Pm&quot;</span><span class="p">,</span> <span class="s2">&quot;Sm&quot;</span><span class="p">,</span> <span class="s2">&quot;Eu&quot;</span><span class="p">,</span> <span class="s2">&quot;Gd&quot;</span><span class="p">,</span> <span class="s2">&quot;Tb&quot;</span><span class="p">,</span> <span class="s2">&quot;Dy&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Ho&quot;</span><span class="p">,</span> <span class="s2">&quot;Er&quot;</span><span class="p">,</span> <span class="s2">&quot;Tm&quot;</span><span class="p">,</span> <span class="s2">&quot;Yb&quot;</span><span class="p">,</span> <span class="s2">&quot;Lu&quot;</span><span class="p">,</span> <span class="s2">&quot;Hf&quot;</span><span class="p">,</span> <span class="s2">&quot;Ta&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;Re&quot;</span><span class="p">,</span> <span class="s2">&quot;Os&quot;</span><span class="p">,</span> <span class="s2">&quot;Ir&quot;</span><span class="p">,</span> <span class="s2">&quot;Pt&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Hg&quot;</span><span class="p">,</span> <span class="s2">&quot;Fr&quot;</span><span class="p">,</span> <span class="s2">&quot;Ra&quot;</span><span class="p">,</span> <span class="s2">&quot;Ac&quot;</span><span class="p">,</span> <span class="s2">&quot;Th&quot;</span><span class="p">,</span> <span class="s2">&quot;Pa&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;Np&quot;</span><span class="p">,</span> <span class="s2">&quot;Pu&quot;</span><span class="p">,</span> <span class="s2">&quot;Am&quot;</span><span class="p">,</span> <span class="s2">&quot;Cm&quot;</span><span class="p">,</span> <span class="s2">&quot;Bk&quot;</span><span class="p">,</span> <span class="s2">&quot;Cf&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Es&quot;</span><span class="p">,</span> <span class="s2">&quot;Fm&quot;</span><span class="p">,</span> <span class="s2">&quot;Md&quot;</span><span class="p">,</span> <span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Lr&quot;</span><span class="p">,</span> <span class="s2">&quot;Rf&quot;</span><span class="p">,</span> <span class="s2">&quot;Db&quot;</span><span class="p">,</span> <span class="s2">&quot;Sg&quot;</span><span class="p">,</span> <span class="s2">&quot;Bh&quot;</span><span class="p">,</span> <span class="s2">&quot;Hs&quot;</span><span class="p">,</span> <span class="s2">&quot;Mt&quot;</span><span class="p">,</span> <span class="s2">&quot;Ds&quot;</span><span class="p">,</span> <span class="s2">&quot;Rg&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Cn&quot;</span><span class="p">,</span> <span class="s2">&quot;Nh&quot;</span><span class="p">,</span> <span class="s2">&quot;Fl&quot;</span><span class="p">,</span> <span class="s2">&quot;Mc&quot;</span><span class="p">,</span> <span class="s2">&quot;Lv&quot;</span><span class="p">,</span> <span class="s2">&quot;Ts&quot;</span><span class="p">,</span> <span class="s2">&quot;Og&quot;</span>
+                <span class="p">}</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span> 
+<div class="viewcode-block" id="calculate_distance">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.calculate_distance">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_distance</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span><span class="n">pbc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function to calculated distance </span>
+<span class="sd">        for dealing with periodicity</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - cell : ndarray</span>
+<span class="sd">        The cell in input atoms.</span>
+<span class="sd">    - points1 , points2 : ndarray</span>
+<span class="sd">        The positions to calculate distance with periodicity </span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    - dis : float</span>
+<span class="sd">        The periodic distance between two points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if periodic boundary conditions are applied in any direction</span>
+    <span class="k">if</span> <span class="n">pbc</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">a_vec</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># First lattice vector (a)</span>
+        <span class="n">b_vec</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Second lattice vector (b)</span>
+        <span class="n">dis</span> <span class="o">=</span> <span class="mf">10.</span>  <span class="c1"># Initialize a large distance (arbitrary value)</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to store neighboring points</span>
+        
+        <span class="c1"># Generate neighbors by shifting point1&#39;s position in the range of -1, 0, 1 in both directions</span>
+        <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">neighbor_position</span> <span class="o">=</span> <span class="n">point1</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">da</span> <span class="o">*</span> <span class="n">a_vec</span> <span class="o">+</span> <span class="n">db</span> <span class="o">*</span> <span class="n">b_vec</span>  <span class="c1"># Calculate neighbor position</span>
+                <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor_position</span><span class="p">)</span>  <span class="c1"># Append to neighbors list</span>
+        
+        <span class="c1"># Find the closest neighbor to point2 using the distance metric</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dis</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">point2</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]):</span>
+                <span class="n">dis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">point2</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">])</span>  <span class="c1"># Update distance if a closer neighbor is found</span>
+        
+        <span class="k">return</span> <span class="n">dis</span>  <span class="c1"># Return the minimum distance considering periodic boundary conditions</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If no periodicity is applied, simply return the Euclidean distance</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point1</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">point2</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">])</span></div>
+
+    
+<div class="viewcode-block" id="calculate_atom_distance">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.calculate_atom_distance">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_atom_distance</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">pbc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function to calculated distance for dealing with periodicity</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - cell : ndarray</span>
+<span class="sd">        The cell in input atoms.</span>
+<span class="sd">    - points1 , points2 : ndarray</span>
+<span class="sd">        The positions to calculate distance with periodicity </span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    - dis : float</span>
+<span class="sd">        The periodic distance between two points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if periodic boundary conditions are applied in any direction</span>
+    <span class="k">if</span> <span class="n">pbc</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">a_vec</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># First lattice vector (a)</span>
+        <span class="n">b_vec</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Second lattice vector (b)</span>
+        <span class="n">dis</span> <span class="o">=</span> <span class="mf">10.</span>  <span class="c1"># Initialize a large distance (arbitrary value)</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to store neighboring points</span>
+        
+        <span class="c1"># Generate neighbors by shifting point1&#39;s position in the range of -1, 0, 1 in both directions</span>
+        <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">neighbor_position</span> <span class="o">=</span> <span class="n">point1</span> <span class="o">+</span> <span class="n">da</span> <span class="o">*</span> <span class="n">a_vec</span> <span class="o">+</span> <span class="n">db</span> <span class="o">*</span> <span class="n">b_vec</span>  <span class="c1"># Calculate neighbor position</span>
+                <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor_position</span><span class="p">)</span>  <span class="c1"># Append to neighbors list</span>
+        
+        <span class="c1"># Find the closest neighbor to point2 using the distance metric</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dis</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">point2</span><span class="p">):</span>  <span class="c1"># Compare distance with the current minimum distance</span>
+                <span class="n">dis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">point2</span><span class="p">)</span>  <span class="c1"># Update distance if a closer neighbor is found</span>
+        
+        <span class="k">return</span> <span class="n">dis</span>  <span class="c1"># Return the minimum distance considering periodic boundary conditions</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If no periodicity is applied, simply return the Euclidean distance between the two points</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point1</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">point2</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">])</span></div>
+
+
+    
+<div class="viewcode-block" id="select_points">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.select_points">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">select_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">pbc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function is used to search for and select adsorption sites from a list of potential points.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - points : list of ndarray</span>
+<span class="sd">        All possible potential sites from which adsorption points will be selected.</span>
+
+<span class="sd">    - num_points : int</span>
+<span class="sd">        The number of adsorbents (points) to select.</span>
+
+<span class="sd">    - min_distance : float</span>
+<span class="sd">        The minimum distance required between two neighboring adsorbents.</span>
+
+<span class="sd">    - cell : ndarray</span>
+<span class="sd">        The unit cell matrix of the input atomic structure.</span>
+
+<span class="sd">    - pbc : ndarray</span>
+<span class="sd">        The periodic boundary conditions (True or False for each direction).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    - selected_points : list of ndarray</span>
+<span class="sd">        A list of selected adsorption points that satisfy the distance criteria.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">selected_points</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Initialize an empty list to store selected adsorption points</span>
+    
+    <span class="c1"># Continue selecting points until the desired number of adsorbents is reached</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">num_points</span><span class="p">:</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>  <span class="c1"># Randomly select a point from the list of potential points</span>
+        
+        <span class="c1"># Check if the selected point is at a valid distance from all previously selected points</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">calculate_distance</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">selected_point</span><span class="p">,</span> <span class="n">pbc</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">min_distance</span> <span class="k">for</span> <span class="n">selected_point</span> <span class="ow">in</span> <span class="n">selected_points</span><span class="p">):</span>
+            <span class="n">selected_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>  <span class="c1"># If valid, append the point to the list of selected points</span>
+    
+    <span class="k">return</span> <span class="n">selected_points</span>  <span class="c1"># Return the list of selected points</span></div>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">networkx.algorithms</span><span class="w"> </span><span class="kn">import</span> <span class="n">isomorphism</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase.neighborlist</span><span class="w"> </span><span class="kn">import</span> <span class="n">natural_cutoffs</span><span class="p">,</span> <span class="n">NeighborList</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<div class="viewcode-block" id="is_unique">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.is_unique">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_unique</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">unique_graphs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine if the current input graph is unique</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - graph : networkx.Graph object</span>
+<span class="sd">        The graph for determining uniqueness</span>
+
+<span class="sd">    - unique_graphs : list of networkx.Graph objects</span>
+<span class="sd">        List of saved graphs to compare with the current graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># If no unique graphs have been stored, the current graph is considered unique</span>
+    <span class="k">if</span> <span class="n">unique_graphs</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    
+    <span class="c1"># Check if the current graph is isomorphic to any of the previously stored unique graphs</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">unique_graph</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_graphs</span><span class="p">):</span>
+        <span class="n">GM</span> <span class="o">=</span> <span class="n">isomorphism</span><span class="o">.</span><span class="n">GraphMatcher</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">unique_graph</span><span class="p">,</span> <span class="n">node_match</span><span class="o">=</span><span class="n">isomorphism</span><span class="o">.</span><span class="n">categorical_node_match</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        
+        <span class="c1"># If a match is found (graphs are isomorphic), the current graph is not unique</span>
+        <span class="k">if</span> <span class="n">GM</span><span class="o">.</span><span class="n">is_isomorphic</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="c1"># If no match is found, the current graph is unique</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="get_graph">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.get_graph">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_graph</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a graph representation of the atomic structure.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - atoms : ASE Atoms object</span>
+<span class="sd">        The atomic structure to be converted into a graph.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    - graph : networkx.Graph object</span>
+<span class="sd">        The generated graph of the atomic structure, representing atomic connectivity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Check if periodic boundary conditions (PBC) are applied</span>
+    <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># If PBC is applied, calculate the periodic graph</span>
+        <span class="n">cutoffs</span> <span class="o">=</span> <span class="n">natural_cutoffs</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">mult</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>  <span class="c1"># Get cutoff distances for atomic interactions</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_positions</span><span class="p">()</span>  <span class="c1"># Get the positions of atoms</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_cell</span><span class="p">()</span>  <span class="c1"># Get the unit cell</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># Initialize a new graph object</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">symbols</span>  <span class="c1"># Get the atomic symbols</span>
+        
+        <span class="c1"># Add nodes to the graph, each node represents an atom with its symbol</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">]})</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">))])</span>
+        
+        <span class="c1"># Iterate over all pairs of atoms to check their distances and add edges if they are within the cutoff range</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)):</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">calculate_atom_distance</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">,</span> <span class="n">point1</span><span class="o">=</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">point2</span><span class="o">=</span><span class="n">positions</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">pbc</span><span class="o">=</span><span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">cutoffs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">cutoffs</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>  <span class="c1"># If distance is within the cutoff, add an edge</span>
+                    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        
+        <span class="c1"># Apply the Weisfeiler-Lehman (WL) graph kernel (not defined in the provided code)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">wl</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">G</span>  <span class="c1"># Return the graph</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If PBC is not applied, calculate the non-periodic graph</span>
+        <span class="n">cutoffs</span> <span class="o">=</span> <span class="n">natural_cutoffs</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">mult</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>  <span class="c1"># Get cutoff distances for atomic interactions</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="n">NeighborList</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">,</span> <span class="n">self_interaction</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bothways</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Create a NeighborList</span>
+        <span class="n">nl</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>  <span class="c1"># Update the neighbor list based on the current atomic structure</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">nl</span><span class="o">.</span><span class="n">get_connectivity_matrix</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Get the connectivity matrix (adjacency matrix)</span>
+        
+        <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># Initialize a new graph object</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">symbols</span>  <span class="c1"># Get the atomic symbols</span>
+        
+        <span class="c1"># Add nodes to the graph, each node represents an atom with its symbol</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">]})</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">))])</span>
+        
+        <span class="c1"># Add edges to the graph based on the connectivity matrix (atoms that are neighbors)</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">matrix</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Get the indices of the connected atoms</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">cols</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>  <span class="c1"># Create edges between the connected atoms</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>  <span class="c1"># Add the edges to the graph</span>
+        
+        <span class="c1"># Apply the Weisfeiler-Lehman (WL) graph kernel (not defined in the provided code)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">wl</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">graph</span>  <span class="c1"># Return the graph</span></div>
+
+
+<div class="viewcode-block" id="wl">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.wl">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">wl</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an input graph into a Weisfeiler-Lehman (WL) graph by performing a WL conversion.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - graph : networkx.Graph object</span>
+<span class="sd">        The input graph to be converted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    - new_graph : networkx.Graph object</span>
+<span class="sd">        The transformed graph after applying the Weisfeiler-Lehman algorithm.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Get the &#39;symbol&#39; attribute for each node in the graph</span>
+    <span class="n">node_symbols</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s1">&#39;symbol&#39;</span><span class="p">)</span>
+    
+    <span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Define the number of iterations for the WL algorithm</span>
+    
+    <span class="c1"># Perform the Weisfeiler-Lehman algorithm for a specified number of iterations</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="n">new_symbols</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># A dictionary to store new symbols for the nodes</span>
+        
+        <span class="c1"># Iterate through all nodes in the graph</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+            <span class="n">symbol</span> <span class="o">=</span> <span class="n">node_symbols</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>  <span class="c1"># Get the current symbol for the node</span>
+            <span class="c1"># Get the symbols of the neighboring nodes</span>
+            <span class="n">neighbor_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">node_symbols</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span>
+            <span class="c1"># Combine the node&#39;s symbol with its neighbors&#39; symbols and sort them</span>
+            <span class="n">combined_symbol</span> <span class="o">=</span> <span class="n">symbol</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">neighbor_symbols</span><span class="p">))</span>
+            <span class="n">new_symbols</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_symbol</span>  <span class="c1"># Store the new symbol for the node</span>
+        
+        <span class="c1"># Update node_symbols with the new symbols after this iteration</span>
+        <span class="n">node_symbols</span> <span class="o">=</span> <span class="n">new_symbols</span>
+    
+    <span class="c1"># Create a new graph with the updated node symbols</span>
+    <span class="n">new_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    
+    <span class="c1"># Add nodes to the new graph with their new symbols</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">node_symbols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">new_graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">new_graph</span>  <span class="c1"># Return the newly created Weisfeiler-Lehman graph</span></div>
+
+
+<div class="viewcode-block" id="plane_normal">
+<a class="viewcode-back" href="../../chem_topo.html#chem_topo.utils.plane_normal">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plane_normal</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the surface normal vector to a plane of best fit.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - xyz : ndarray (n, 3)</span>
+<span class="sd">        3D points to fit the plane to.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    - vec : ndarray (1, 3)</span>
+<span class="sd">        Unit vector normal to the plane of best fit.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Set up the design matrix A with the x, y coordinates and a column of ones (for the intercept)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+    
+    <span class="c1"># Solve for the coefficients of the plane using least squares to fit the z-values</span>
+    <span class="n">vec</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+    
+    <span class="c1"># Set the z-component of the normal vector to -1 (align with the z-axis)</span>
+    <span class="n">vec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+    
+    <span class="c1"># Normalize the vector to make it a unit vector</span>
+    <span class="n">vec</span> <span class="o">/=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">vec</span>  <span class="c1"># Return the normalized normal vector</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, zheng shisheng , zhang ximing.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
