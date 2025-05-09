@@ -44,11 +44,38 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">chem_topo</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">chem_topo package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adsorption-sites-module">adsorption_sites module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#persistent-path-homology-cli-module">persistent_path_homology_cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#post-process-module">post_process module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#topo-features-module">topo_features module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#utils-module">utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-chem_topo.adsorption_sites">chem_topo.adsorption_sites module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder"><code class="docutils literal notranslate"><span class="pre">ClusterAdsorptionSitesFinder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder"><code class="docutils literal notranslate"><span class="pre">SlabAdsorptionsSitesFinder</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chem-topo-persistent-path-homology-cli-module">chem_topo.persistent_path_homology_cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-chem_topo.post_process">chem_topo.post_process module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.post_process.AlphaComplexAnalyzer"><code class="docutils literal notranslate"><span class="pre">AlphaComplexAnalyzer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-chem_topo.topo_features">chem_topo.topo_features module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.topo_features.PathHomology"><code class="docutils literal notranslate"><span class="pre">PathHomology</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.topo_features.SimplicialComplexLaplacian"><code class="docutils literal notranslate"><span class="pre">SimplicialComplexLaplacian</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.topo_features.statistic_eigvalues"><code class="docutils literal notranslate"><span class="pre">statistic_eigvalues</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.topo_features.timeit"><code class="docutils literal notranslate"><span class="pre">timeit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-chem_topo.utils">chem_topo.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.calculate_atom_distance"><code class="docutils literal notranslate"><span class="pre">calculate_atom_distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.calculate_centroid"><code class="docutils literal notranslate"><span class="pre">calculate_centroid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.calculate_distance"><code class="docutils literal notranslate"><span class="pre">calculate_distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.get_cutoffs"><code class="docutils literal notranslate"><span class="pre">get_cutoffs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.get_graph"><code class="docutils literal notranslate"><span class="pre">get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.is_unique"><code class="docutils literal notranslate"><span class="pre">is_unique()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.objective"><code class="docutils literal notranslate"><span class="pre">objective()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.plane_normal"><code class="docutils literal notranslate"><span class="pre">plane_normal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.select_points"><code class="docutils literal notranslate"><span class="pre">select_points()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chem_topo.utils.wl"><code class="docutils literal notranslate"><span class="pre">wl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-chem_topo">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -85,20 +112,1776 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="adsorption-sites-module">
-<h2>adsorption_sites module<a class="headerlink" href="#adsorption-sites-module" title="Link to this heading">¶</a></h2>
+<section id="module-chem_topo.adsorption_sites">
+<span id="chem-topo-adsorption-sites-module"></span><h2>chem_topo.adsorption_sites module<a class="headerlink" href="#module-chem_topo.adsorption_sites" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chem_topo.adsorption_sites.</span></span><span class="sig-name descname"><span class="pre">ClusterAdsorptionSitesFinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adsorbate_elements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>atoms<span class="classifier">ase.Atoms object</span></dt><dd><p>The nanoparticle to use as a template to generate surface sites. 
+Accept any ase.Atoms object.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>adsorbate_elements<span class="classifier">list of strs</span></dt><dd><p>If the sites are generated without considering adsorbates, 
+the symbols of the adsorbates are entered as a list, resulting in a clean slab</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>bond_len<span class="classifier">float , default None</span></dt><dd><p>The sum of the atomic radii between a reasonable adsorption 
+substrate and the adsorbate.If not setting, the threshold for 
+the atomic hard sphere model is automatically calculated using 
+the covalent radius of ase</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mul<span class="classifier">float , default 0.8</span></dt><dd><p>A scaling factor for the atomic bond lengths used to modulate
+the number of sites generated, resulting in a larger number of potential sites</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tol<span class="classifier">float , default 0.6</span></dt><dd><p>The minimum distance in Angstrom between two site for removal
+of partially overlapping site</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>radius<span class="classifier">float , default 5.0</span></dt><dd><p>The maximum distance between two points 
+when performing persistent homology calculations</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>k<span class="classifier">float , default 1.1</span></dt><dd><p>Expand the key length, so as to calculate the length of the expansion
+in the direction of the normal vector, k value is too small will lead 
+to the calculation of the length of the expansion of the error, 
+you can according to the needs of appropriate increase</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.extend_point_away_from_center">
+<span class="sig-name descname"><span class="pre">extend_point_away_from_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.extend_point_away_from_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.extend_point_away_from_center" title="Link to this definition">¶</a></dt>
+<dd><p>Offset a surface site along the normal vector.</p>
+<p>This function generates a normal vector using the center of mass of the 
+initial atom cluster and offsets the point outward by a specified distance.</p>
+<section id="id1">
+<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>center<span class="classifier">ndarray</span></dt><dd><p>The center point of the cluster.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>point<span class="classifier">ndarray</span></dt><dd><p>The site to be offset outward.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>distance<span class="classifier">float</span></dt><dd><p>The distance to offset in the direction of the normal vector.</p>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
-<section id="persistent-path-homology-cli-module">
-<h2>persistent_path_homology_cli module<a class="headerlink" href="#persistent-path-homology-cli-module" title="Link to this heading">¶</a></h2>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>new_point<span class="classifier">ndarray</span></dt><dd><p>The new position of the point after being offset.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>unit_vector<span class="classifier">ndarray</span></dt><dd><p>The unit vector representing the direction of the offset.</p>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
-<section id="post-process-module">
-<h2>post_process module<a class="headerlink" href="#post-process-module" title="Link to this heading">¶</a></h2>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_inside_sites">
+<span class="sig-name descname"><span class="pre">get_inside_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.get_inside_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_inside_sites" title="Link to this definition">¶</a></dt>
+<dd><p>Identify and return the list of inside sites for the structure.</p>
+<section id="id2">
+<h4>Parameters:<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>absorbent<span class="classifier">list, optional</span></dt><dd><p>A list of element symbols representing adsorbent elements. If provided, 
+the <cite>inside_add_radii</cite> parameter is adjusted based on their covalent radii.</p>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
-<section id="topo-features-module">
-<h2>topo_features module<a class="headerlink" href="#topo-features-module" title="Link to this heading">¶</a></h2>
+<section id="id3">
+<h4>Returns:<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>inside_site_list<span class="classifier">list</span></dt><dd><p>A list of dictionaries, each describing an inside site.</p>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
-<section id="utils-module">
-<h2>utils module<a class="headerlink" href="#utils-module" title="Link to this heading">¶</a></h2>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_sites">
+<span class="sig-name descname"><span class="pre">get_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.get_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_sites" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all adsorption sites (surface and inside).</p>
+<p>This method combines surface and inside sites into a single list. If these 
+sites have not been previously calculated, it computes them first.</p>
+<section id="id4">
+<h4>Parameters:<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>absorbent<span class="classifier">list, optional</span></dt><dd><p>A list of atoms or elements to be considered during site calculations.
+Defaults to an empty list.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id5">
+<h4>Returns:<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>sites<span class="classifier">list</span></dt><dd><p>A list of all adsorption sites, including both surface and inside sites.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_surface_atoms">
+<span class="sig-name descname"><span class="pre">get_surface_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.get_surface_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_surface_atoms" title="Link to this definition">¶</a></dt>
+<dd><p>Identify surface atoms in a structure based on the sum of neighbor direction vectors.</p>
+<section id="id6">
+<h4>Parameters:<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cutoff<span class="classifier">float</span></dt><dd><p>Cutoff radius for neighbor search (in Ångströms)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tolerance<span class="classifier">float </span></dt><dd><p>If the magnitude of the summed normal vectors is less than this value, 
+the atom is considered a non-surface atom</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id7">
+<h4>Returns:<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>surf_ids<span class="classifier">list</span></dt><dd><p>List of indices of surface atoms.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>surface_atoms<span class="classifier">ase.Atoms object</span></dt><dd><p>Atoms object containing only the detected surface atoms.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_surface_sites">
+<span class="sig-name descname"><span class="pre">get_surface_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.get_surface_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.get_surface_sites" title="Link to this definition">¶</a></dt>
+<dd><p>Generate and return surface adsorption sites based on surface topology.</p>
+<section id="id8">
+<h4>Parameters:<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>absorbent<span class="classifier">list of str, optional</span></dt><dd><p>A list of chemical symbols for adsorbent elements (e.g., [‘H’, ‘O’]).
+Used to adjust radii for adsorbent-related calculations.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id9">
+<h4>Returns:<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>surf_site_list<span class="classifier">list of dict</span></dt><dd><p>A list of dictionaries containing information about surface adsorption sites.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.inside_topo">
+<span class="sig-name descname"><span class="pre">inside_topo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.inside_topo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.inside_topo" title="Link to this definition">¶</a></dt>
+<dd><p>Identify embedding sites within non-periodic structures (e.g., nanoclusters).</p>
+<p>Uses Alpha Complex and Rips Complex to find topological embedding sites.</p>
+<ul class="simple">
+<li><p>Updates <cite>self.inside_site_list</cite> with identified embedding sites.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.surf_topo">
+<span class="sig-name descname"><span class="pre">surf_topo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#ClusterAdsorptionSitesFinder.surf_topo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.ClusterAdsorptionSitesFinder.surf_topo" title="Link to this definition">¶</a></dt>
+<dd><p>The function to topologize surface atoms and obtain sites.
+It uses Alpha Complex to calculate surface topology and generates adsorption sites.</p>
+<section id="id10">
+<h4>Returns:<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<p>Updates self.surf_site_list with the surface sites generated.</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chem_topo.adsorption_sites.</span></span><span class="sig-name descname"><span class="pre">SlabAdsorptionsSitesFinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adsorbate_elements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">both_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>atoms<span class="classifier">ase.Atoms object</span></dt><dd><p>The nanoparticle to use as a template to generate surface sites. 
+Accept any ase.Atoms object.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>adsorbate_elements<span class="classifier">list of str</span></dt><dd><p>If the sites are generated without considering adsorbates, 
+the symbols of the adsorbates are entered as a list, resulting in a clean slab.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>bond_len<span class="classifier">float or None , default None</span></dt><dd><p>The sum of the atomic radii between a reasonable adsorption 
+substrate and the adsorbate.If not setting, the threshold for 
+the atomic hard sphere model is automatically calculated using 
+the covalent radius of ase.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mul<span class="classifier">float , default 0.8</span></dt><dd><p>A scaling factor for the atomic bond lengths used to modulate
+the number of sites generated, resulting in a larger number of potential sites.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tol<span class="classifier">float , default 0.6</span></dt><dd><p>The minimum distance in Angstrom between two site for removal
+of partially overlapping site.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>radius<span class="classifier">float , default 5.0</span></dt><dd><p>The maximum distance between two points 
+when performing persistent homology calculations.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>k<span class="classifier">float , default 1.1</span></dt><dd><p>Expand the key length, so as to calculate the length of the expansion
+in the direction of the normal vector, k value is too small will lead 
+to the calculation of the length of the expansion of the error, 
+you can according to the needs of appropriate increase</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>both_surface<span class="classifier">bool , default False</span></dt><dd><p>Input whether sites generation is performed on both the upper and 
+lower surfaces; when the input is False, only the upper surface is output.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>a</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.calculate_normal_vector">
+<span class="sig-name descname"><span class="pre">calculate_normal_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.calculate_normal_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.calculate_normal_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the normal vector of a surface given three points.</p>
+<section id="id11">
+<h3>Parameters:<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>positions<span class="classifier">array-like, shape (3, 3)</span></dt><dd><p>The Cartesian coordinates of three points on the surface.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id12">
+<h3>Returns:<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>normal<span class="classifier">numpy array</span></dt><dd><p>A normalized normal vector pointing outward from the surface.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.expand_cell">
+<span class="sig-name descname"><span class="pre">expand_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.expand_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.expand_cell" title="Link to this definition">¶</a></dt>
+<dd><p>Return Cartesian coordinates of atoms within a supercell,
+which contains repetitions of the unit cell and at least one neighboring atom.
+Borrowed from Catkit.</p>
+<section id="id13">
+<h3>Parameters:<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cutoff<span class="classifier">float, optional</span></dt><dd><p>A cutoff value to determine the maximum distance for expansion. If None, it is computed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>padding<span class="classifier">list of int, optional, default [1,1,0]</span></dt><dd><p>Padding values for the expansion in each direction. These define the number of unit cell repetitions
+along each of the three axes (x, y, z).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.expand_surface_cells">
+<span class="sig-name descname"><span class="pre">expand_surface_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.expand_surface_cells"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.expand_surface_cells" title="Link to this definition">¶</a></dt>
+<dd><p>Return Cartesian coordinates of surface atoms within a supercell.</p>
+<section id="id14">
+<h3>Parameters:<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>original_atoms<span class="classifier">ase.Atoms object</span></dt><dd><p>The surface atoms that need to be expanded.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cell<span class="classifier">list of float</span></dt><dd><p>Lattice vectors of the atomic structure.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.extend_point_away">
+<span class="sig-name descname"><span class="pre">extend_point_away</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">site</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.extend_point_away"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.extend_point_away" title="Link to this definition">¶</a></dt>
+<dd><p>Offset a surface site along its normal vector direction.</p>
+<section id="id15">
+<h3>Parameters:<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>site<span class="classifier">ndarray</span></dt><dd><p>The position of the site to be offset.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pos<span class="classifier">list of ndarray</span></dt><dd><p>The positions of the initial atoms used to generate the site.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>center<span class="classifier">ndarray</span></dt><dd><p>The center point of the slab (used to determine the direction of offset).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>height<span class="classifier">float</span></dt><dd><p>The distance to offset the site along the normal vector.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id16">
+<h3>Returns:<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>new_site<span class="classifier">ndarray</span></dt><dd><p>The new position of the site after applying the offset.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>normal_vector<span class="classifier">ndarray</span></dt><dd><p>The normal vector used for the offset.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_inside_sites">
+<span class="sig-name descname"><span class="pre">get_inside_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.get_inside_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_inside_sites" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve sites inside the structure using topology analysis.</p>
+<section id="id17">
+<h3>Parameters:<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>absorbent<span class="classifier">list, optional</span></dt><dd><p>List of chemical elements to be considered when adjusting radii.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id18">
+<h3>Returns:<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>inside_site_list<span class="classifier">list</span></dt><dd><p>A list of identified inside sites.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_sites">
+<span class="sig-name descname"><span class="pre">get_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.get_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_sites" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all sites (surface and inside) for the structure.</p>
+<section id="id19">
+<h3>Parameters:<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>absorbent<span class="classifier">list, optional</span></dt><dd><p>List of chemical elements to adjust radii for site generation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id20">
+<h3>Returns:<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>sites<span class="classifier">list</span></dt><dd><p>A list of all sites (surface and inside) identified.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_surface_atoms">
+<span class="sig-name descname"><span class="pre">get_surface_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">both_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.get_surface_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_surface_atoms" title="Link to this definition">¶</a></dt>
+<dd><p>The function to access to surface atoms by coordination number</p>
+<section id="id21">
+<h3>Parameters:<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cutoff<span class="classifier">float</span></dt><dd><p>Cutoff radius for neighbor search (in Ångströms)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tolerance<span class="classifier">float </span></dt><dd><p>If the magnitude of the summed normal vectors is less than this value, 
+the atom is considered a non-surface atom</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>both_surface<span class="classifier">boolen , default False</span></dt><dd><p>Whether to return the atoms of the lower surface, 
+if True, the atoms of the upper and lower surfaces will be returned.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id22">
+<h3>Returns:<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>surf_ids<span class="classifier">list</span></dt><dd><p>List of indices of surface atoms.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>surface_atoms<span class="classifier">ase.Atoms object</span></dt><dd><p>Atoms object containing only the detected surface atoms.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_surface_sites">
+<span class="sig-name descname"><span class="pre">get_surface_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.get_surface_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.get_surface_sites" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve sites inside the structure using topology analysis.</p>
+<section id="id23">
+<h3>Parameters:<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>absorbent<span class="classifier">list, optional</span></dt><dd><p>List of chemical elements to be considered when adjusting radii.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id24">
+<h3>Returns:<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>surf_site_list<span class="classifier">list</span></dt><dd><p>A list of identified surface sites.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.inside_topo">
+<span class="sig-name descname"><span class="pre">inside_topo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.inside_topo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.inside_topo" title="Link to this definition">¶</a></dt>
+<dd><p>This is a function used to find embedding sites for various
+periodic structures.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.point_in_range">
+<span class="sig-name descname"><span class="pre">point_in_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.point_in_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.point_in_range" title="Link to this definition">¶</a></dt>
+<dd><p>Determine if a given site (position) is within the current lattice boundaries.</p>
+<section id="id25">
+<h3>Parameters:<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>pos<span class="classifier">array</span></dt><dd><p>The Cartesian coordinates of the point to be checked.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id26">
+<h3>Returns:<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>bool</dt><dd><p>True if the point is within the lattice boundaries, False otherwise.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.surf_topo">
+<span class="sig-name descname"><span class="pre">surf_topo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/adsorption_sites.html#SlabAdsorptionsSitesFinder.surf_topo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.adsorption_sites.SlabAdsorptionsSitesFinder.surf_topo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="chem-topo-persistent-path-homology-cli-module">
+<h2>chem_topo.persistent_path_homology_cli module<a class="headerlink" href="#chem-topo-persistent-path-homology-cli-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-chem_topo.post_process">
+<span id="chem-topo-post-process-module"></span><h2>chem_topo.post_process module<a class="headerlink" href="#module-chem_topo.post_process" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="chem_topo.post_process.AlphaComplexAnalyzer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chem_topo.post_process.</span></span><span class="sig-name descname"><span class="pre">AlphaComplexAnalyzer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/post_process.html#AlphaComplexAnalyzer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.post_process.AlphaComplexAnalyzer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to perform Alpha Filtration and persistent homology analysis
+on atomic trajectory data using the HomCloud library.</p>
+<p>This class focuses on extracting β1 (1-dimensional) topological features
+and identifying corresponding atomic coordinates involved in persistent cycles.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.post_process.AlphaComplexAnalyzer.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/post_process.html#AlphaComplexAnalyzer.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.post_process.AlphaComplexAnalyzer.run" title="Link to this definition">¶</a></dt>
+<dd><p>Execute persistent homology analysis for a batch of frames.</p>
+<section id="id27">
+<h3>Parameters:<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>task_index<span class="classifier">int</span></dt><dd><p>The current task index used to determine frame range.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-chem_topo.topo_features">
+<span id="chem-topo-topo-features-module"></span><h2>chem_topo.topo_features module<a class="headerlink" href="#module-chem_topo.topo_features" title="Link to this heading">¶</a></h2>
+<p>Different persistent homology methods to obtain features.</p>
+<p>The PathHomology class is used to extract features for continuous homology, 
+distance-based path homology, and angle-based path homology.
+The SimplicialComplexLaplacian class is used to implement feature extraction 
+of the persistent topological hyperdigraph Laplacian.</p>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h3>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id28" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Chen, Dong, Jian Liu, and Guo-Wei Wei. “Multiscale topology-enabled structure-to-sequence 
+transformer for protein–ligand interaction predictions.” <em>Nature Machine Intelligence</em> (2024): 1–12.</p>
+</aside>
+<aside class="footnote brackets" id="id29" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Persistent path topology in molecular and materials sciences.</p>
+</aside>
+<aside class="footnote brackets" id="id30" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>GUDHI Library. <a class="reference external" href="https://gudhi.inria.fr/">https://gudhi.inria.fr/</a></p>
+</aside>
+</aside>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chem_topo.topo_features.</span></span><span class="sig-name descname"><span class="pre">PathHomology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[False,</span> <span class="pre">False,</span> <span class="pre">False]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.custom_pbc_distance">
+<span class="sig-name descname"><span class="pre">custom_pbc_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.custom_pbc_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.custom_pbc_distance" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate pairwise minimum-image distances under orthogonal Periodic Boundary Conditions (PBC).</p>
+<section id="id31">
+<h3>Parameters:<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>points<span class="classifier">np.ndarray</span></dt><dd><p>(N,3) array of atomic coordinates</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cell_size<span class="classifier">np.ndarray</span></dt><dd><p>(3,) array of orthogonal cell dimensions [a,b,c]</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id32">
+<h3>Returns:<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dist_matrix<span class="classifier">np.ndarray</span></dt><dd><p>(N,N) symmetric distance matrix, where element [i,j] gives the 
+minimum-image distance between points i and j under PBC.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.path_homology">
+<span class="sig-name descname"><span class="pre">path_homology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.path_homology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.path_homology" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.path_homology_for_connected_digraph">
+<span class="sig-name descname"><span class="pre">path_homology_for_connected_digraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allowed_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.path_homology_for_connected_digraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.path_homology_for_connected_digraph" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the dimension of the path homology group for required dimensions.</p>
+<section id="id33">
+<h3>Parameters:<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>allowed_path<span class="classifier">dict</span></dt><dd><p>the dict of all (0-n)-path, the format of the path is string.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_path<span class="classifier">int </span></dt><dd><p>the maximum length of path, (maximum dimension for homology)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id34">
+<h3>Returns:<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>betti_numbers<span class="classifier">list</span></dt><dd><p>the Betti number for dimension 0 to dimension max_path</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.periodic_distance">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">periodic_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coord2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.periodic_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.periodic_distance" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the minimum image distance between two coordinates under Periodic Boundary Conditions (PBC).
+This method is particularly useful for crystal structure simulations where atoms can interact 
+with their periodic images in adjacent unit cells.</p>
+<section id="id35">
+<h3>Parameters:<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>coord1,coord2<span class="classifier">np.ndarray </span></dt><dd><p>Cartesian coordinates of first point (3D vector).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cell_matrix<span class="classifier">np.ndarray</span></dt><dd><dl class="simple">
+<dt>3x3 matrix representing unit cell vectors as rows</dt><dd><p>[[a_x, a_y, a_z],
+[b_x, b_y, b_z],
+[c_x, c_y, c_z]]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pbc<span class="classifier">array</span></dt><dd><dl class="simple">
+<dt>Boolean array of length 3 indicating which dimensions have PBC enabled</dt><dd><p>[x_pbc, y_pbc, z_pbc]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id36">
+<h3>Returns:<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>float    </dt><dd><p>Minimum distance between the points considering periodic images</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.persistent_angle_path_homology">
+<span class="sig-name descname"><span class="pre">persistent_angle_path_homology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloudpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration_angle_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.persistent_angle_path_homology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.persistent_angle_path_homology" title="Link to this definition">¶</a></dt>
+<dd><p>Angle-based filtration of cloudpoints is performed.
+Specifically, we divide the 3-dimensional space in two steps. First, along the z-axis, for
+any plane perpendicular to the xy-plane and passing through the z-axis will be divided into
+12 sectors by rays passing through the origin at 30-degree intervals. Second, any of the
+partitioned planes in the first step (usually the plane passing through the x-axis) will be
+rotated along the z-axis at 30 degree intervals to de-partition the space and obtain 12 radial
+regions perpendicular to the z-axis direction. Combining these two steps, the 3D space can be
+divided into 72 (72 = 360/30 * 360/30 /2) regions. The angle filtration process is introduced
+by considering all edges contained in the region in order.</p>
+<section id="id37">
+<h3>Parameters:<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cloudpoints<span class="classifier">array</span></dt><dd><p>the coordinates of the points</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>points_weight<span class="classifier">list or array</span></dt><dd><p>the weights of point in the cloudpoints, used to define the digraph</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_path<span class="classifier">int</span></dt><dd><p>maximum path length, or maximum dimension of path homology</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration_angle_step<span class="classifier">int , default 30</span></dt><dd><p>the angle step during the angle-based filtration</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id38">
+<h3>Returns:<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_betti_num<span class="classifier">list</span></dt><dd><p>a list of betti numbers of the path homology groups in each
+dimension (0-max_path) obtained during the angle-based filtation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.persistent_angle_path_homology_from_digraph">
+<span class="sig-name descname"><span class="pre">persistent_angle_path_homology_from_digraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloudpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration_angle_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.persistent_angle_path_homology_from_digraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.persistent_angle_path_homology_from_digraph" title="Link to this definition">¶</a></dt>
+<dd><p>Angle-based filtration for digraph is performed.</p>
+<section id="id39">
+<h3>Parameters:<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cloudpoints<span class="classifier">array</span></dt><dd><p>the coordinates of the points</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>all_edges<span class="classifier">array</span></dt><dd><p>the maximum edges of the final digraph, shape: [n, 2]</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration_angle_step<span class="classifier">int , default 30</span></dt><dd><p>he angle step during the angle-based filtration</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id40">
+<h3>Returns:<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_betti_num<span class="classifier">list</span></dt><dd><p>a list of betti numbers of the path homology groups in each
+dimension (0-max_path) obtained during the angle-based filtation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.persistent_homology">
+<span class="sig-name descname"><span class="pre">persistent_homology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloudpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.persistent_homology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.persistent_homology" title="Link to this definition">¶</a></dt>
+<dd><p>Compute persistent homology using the Gudhi library with optional PBC handling.</p>
+<section id="id41">
+<h3>Parameters:<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cloudpoints<span class="classifier">np.ndarray</span></dt><dd><p>(N,3) array of input coordinates.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_path<span class="classifier">int</span></dt><dd><p>Maximum homology dimension to compute (H_0 to H_max_path).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration_values<span class="classifier">list or array, optional</span></dt><dd><p>Filter thresholds. Auto-generated if None.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id42">
+<h3>Returns:<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>list</dt><dd><p>Betti numbers at each filtration step, where each element is a 
+[β0, β1,…, β_max_path] array.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.persistent_path_homology">
+<span class="sig-name descname"><span class="pre">persistent_path_homology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloudpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.persistent_path_homology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.persistent_path_homology" title="Link to this definition">¶</a></dt>
+<dd><p>Distance based filtration for cloudpoints.</p>
+<section id="id43">
+<h3>Parameters:<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cloudpoints<span class="classifier">array</span></dt><dd><p>the coordinates of the points</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>points_weight<span class="classifier">list or array</span></dt><dd><p>the weights of point in the cloudpoints, used to define the digraph</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_path<span class="classifier">int</span></dt><dd><p>maximum path length, or maximum dimension of path homology</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration<span class="classifier">array</span></dt><dd><p>distance-based filtration, default: array(0, max_distance, 0.1)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id44">
+<h3>Returns:<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_betti_num<span class="classifier">list</span></dt><dd><p>a list of betti numbers of the path homology groups in each
+dimension (0-max_path) obtained during the filtation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.persistent_path_homology_from_digraph">
+<span class="sig-name descname"><span class="pre">persistent_path_homology_from_digraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloudpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.persistent_path_homology_from_digraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.persistent_path_homology_from_digraph" title="Link to this definition">¶</a></dt>
+<dd><p>Distance-based filtration for digraph is performed.</p>
+<section id="id45">
+<h3>Parameters:<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cloudpoints<span class="classifier">array</span></dt><dd><p>the coordinates of the points</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>all_edges<span class="classifier">array</span></dt><dd><p>the maximum edges of the final digraph, shape: [n, 2]</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration_angle_step<span class="classifier">int, default 30</span></dt><dd><p>the angle step during the angle-based filtration</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id46">
+<h3>Returns:<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_betti_num<span class="classifier">list</span></dt><dd><p>a list of betti numbers of the path homology groups in each
+dimension (0-max_path) obtained during the angle-based filtation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.remove_loops">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_loops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.remove_loops"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.remove_loops" title="Link to this definition">¶</a></dt>
+<dd><p>Remove the loops of the digraph.</p>
+<section id="id47">
+<h3>Parameters:<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>edges<span class="classifier">array</span></dt><dd><p>shape = [n, 2]</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id48">
+<h3>Returns:<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>edges<span class="classifier">array</span></dt><dd><p>shape = [n-m, 2], m is the number of the loops</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.split_independent_compondent">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split_independent_compondent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.split_independent_compondent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.split_independent_compondent" title="Link to this definition">¶</a></dt>
+<dd><p>If the digraph is not fully connected, then splitting it into independent components.
+Using the depth first search (DFS) algorithms to split the undirected graph.</p>
+<section id="id49">
+<h3>Parameters:<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>edges<span class="classifier">array</span></dt><dd><p>shape = [n, 2]</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>nodes<span class="classifier">array</span></dt><dd><p>shape = [k, ], k is the number of the whole graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id50">
+<h3>Returns:<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_components<span class="classifier">list</span></dt><dd><p>the nodes’ set of independent components</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.split_independent_digraph">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split_independent_digraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.split_independent_digraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.split_independent_digraph" title="Link to this definition">¶</a></dt>
+<dd><p>If the digraph is not fully connected, then splitting it into independent components.
+Using the depth first search (DFS) algorithms to split the undirected graph.</p>
+<section id="id51">
+<h3>Parameters:<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_components<span class="classifier">list</span></dt><dd><p>the nodes’ set of independent components
+edges (array): shape = [n, 2]</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id52">
+<h3>Returns:<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_digraphs<span class="classifier">list</span></dt><dd><p>a list of digraphs, each digraph contains a list of edges.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.utils_generate_allowed_paths">
+<span class="sig-name descname"><span class="pre">utils_generate_allowed_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.utils_generate_allowed_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.utils_generate_allowed_paths" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the allowed paths of the digraph.</p>
+<section id="id53">
+<h3>Parameters:<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>edges<span class="classifier">array</span></dt><dd><p>shape = [n, 2], int or str</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id54">
+<h3>Returns:<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>allowed_path_str<span class="classifier">dict</span></dt><dd><p>all paths from dimension 0 to dimension max_path</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.utils_unlimited_boundary_operator">
+<span class="sig-name descname"><span class="pre">utils_unlimited_boundary_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allowed_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.utils_unlimited_boundary_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.utils_unlimited_boundary_operator" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the n-th boundary matrix for mapping (n+1)-path to (n)-path.</p>
+<section id="id55">
+<h3>Parameters:<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>allowed_path<span class="classifier">list</span></dt><dd><p>list of (n+1)-paths, each path stores in array</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_path<span class="classifier">int</span></dt><dd><p>n should &gt;= 1, n is the dimension of the boundary matrix</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id56">
+<h3>Returns:<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>unlimited_boundary_mat<span class="classifier">array</span></dt><dd><p>the matrix representation of the n-th boundary matrix</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.PathHomology.vector_angle">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#PathHomology.vector_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.PathHomology.vector_angle" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the angle between vector v0 and vector v1 in degree.</p>
+<section id="id57">
+<h3>Parameters:<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>v0<span class="classifier">array </span></dt><dd><p>n dimension vector, n &gt;= 2</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>v1<span class="classifier">array</span></dt><dd><p>n dimension vector, n &gt;= 2</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id58">
+<h3>Returns:<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>angle<span class="classifier">int</span></dt><dd><p>angle in degree.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chem_topo.topo_features.</span></span><span class="sig-name descname"><span class="pre">SimplicialComplexLaplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eigenvalue_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy_eigvalsh'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.adjacency_map_to_simplex">
+<span class="sig-name descname"><span class="pre">adjacency_map_to_simplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.adjacency_map_to_simplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.adjacency_map_to_simplex" title="Link to this definition">¶</a></dt>
+<dd><p>Given an adjacency matrix for an undirected graph, construct the clique complex (simplicial complex)
+of the graph.</p>
+<section id="id59">
+<h3>Parameters:<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>adjacency_matrix<span class="classifier">np.array</span></dt><dd><p>Adjacency matrix of the graph.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_dim<span class="classifier">int </span></dt><dd><p>Maximum simplex dimension to construct (0: vertices, 1: edges, 2: triangles, etc.)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id60">
+<h3>Returns:<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>simplicial_complex</dt><dd><p>Dictionary where keys are dimensions and values are lists of simplices.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.boundary_to_laplacian_matrix">
+<span class="sig-name descname"><span class="pre">boundary_to_laplacian_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boundary_matrix_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.boundary_to_laplacian_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.boundary_to_laplacian_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Construct the Laplacian matrices of the simplicial complex using its boundary matrices.
+The Laplacian is given by:</p>
+<blockquote>
+<div><p>L = B_{n+1} * B_{n+1}^T + B_n^T * B_n</p>
+</div></blockquote>
+<section id="id61">
+<h3>Parameters:<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>boundary_matrix_dict<span class="classifier">dict </span></dt><dd><p>Dictionary of boundary matrices.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id62">
+<h3>Returns:<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>laplacian_matrix_dict<span class="classifier">dict</span></dt><dd><p>Dictionary where each key corresponds to a dimension and its value is the Laplacian matrix.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.complex_to_boundary_matrix">
+<span class="sig-name descname"><span class="pre">complex_to_boundary_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.complex_to_boundary_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.complex_to_boundary_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Convert a simplicial complex into its boundary matrices.
+Each boundary matrix encodes the relationship between n-simplices and (n-1)-simplices.</p>
+<section id="id63">
+<h3>Parameters:<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>complex<span class="classifier">dict </span></dt><dd><p>Dictionary representing the simplicial complex.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id64">
+<h3>Returns:<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>boundary_matrix_dict<span class="classifier">dict</span></dt><dd><p>Dictionary where each key corresponds to a dimension and its value is the boundary matrix.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.periodic_distance_general">
+<span class="sig-name descname"><span class="pre">periodic_distance_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True,</span> <span class="pre">True,</span> <span class="pre">True]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.periodic_distance_general"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.periodic_distance_general" title="Link to this definition">¶</a></dt>
+<dd><p>General periodic distance calculation</p>
+<section id="id65">
+<h3>Parameters:<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>points<span class="classifier">np.array (N, dim)</span></dt><dd><p>Point cloud coordinates</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lattice_vectors<span class="classifier">np.array (dim, dim)</span></dt><dd><p>Lattice basis vector matrix</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pbc<span class="classifier">list of bool</span></dt><dd><p>Whether to apply periodic boundaries to each dimension, such as [True, True, False] means the first two dimensions are periodic</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id66">
+<h3>Returns:<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>distance_matrix : np.array (N, N)</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.persistent_simplicialComplex_laplacian">
+<span class="sig-name descname"><span class="pre">persistent_simplicialComplex_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_adjacency_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_adjacency_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_distance_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_dis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_by_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.persistent_simplicialComplex_laplacian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.persistent_simplicialComplex_laplacian" title="Link to this definition">¶</a></dt>
+<dd><p>Compute persistent Laplacian eigenvalues of a simplicial complex over a filtration.</p>
+<section id="id67">
+<h3>Parameters:<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>input_data<span class="classifier">np.ndarray</span></dt><dd><p>Either point cloud data (N, D) or a precomputed (N, N) distance matrix depending on <cite>is_distance_matrix</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_adjacency_matrix<span class="classifier">np.ndarray, optional</span></dt><dd><p>A binary (N, N) matrix indicating maximum allowed edges (1 = allow, 0 = disallow).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>min_adjacency_matrix<span class="classifier">np.ndarray, optional</span></dt><dd><p>A binary (N, N) matrix indicating mandatory edges (1 = always include, 0 = optional).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>is_distance_matrix<span class="classifier">bool</span></dt><dd><p>If True, <cite>input_data</cite> is interpreted as a distance matrix; otherwise, it is treated as point cloud coordinates.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_dim<span class="classifier">int</span></dt><dd><p>The maximum dimension of simplices for which Laplacians are computed (e.g., 1 for edges, 2 for triangles).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration<span class="classifier">np.ndarray, optional</span></dt><dd><p>A 1D array of distance thresholds used in the filtration process. If None, will be generated from cutoff/step.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cutoff_distance<span class="classifier">float, optional</span></dt><dd><p>The upper bound for the filtration. Required if <cite>filtration</cite> is not provided.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>step_dis<span class="classifier">float, optional</span></dt><dd><p>The step size for generating the filtration thresholds (used with <cite>cutoff_distance</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>print_by_step<span class="classifier">bool</span></dt><dd><p>Whether to print Laplacian eigenvalues at each filtration step.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lattice_vectors<span class="classifier">np.ndarray, optional</span></dt><dd><p>(D, D) array of lattice vectors for PBC calculation. If provided, periodic distances will be computed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pbc<span class="classifier">list of bool, optional</span></dt><dd><p>Periodic boundary conditions along each axis, e.g. [True, True, False]. Only used if <cite>lattice_vectors</cite> is set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id68">
+<h3>Returns:<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_laplacian_features<span class="classifier">list of dict</span></dt><dd><p>A list of dictionaries; each dict maps dimension (int) to Laplacian eigenvalues (sorted list of floats),
+collected at each filtration step.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.persistent_simplicialComplex_laplacian_dim0">
+<span class="sig-name descname"><span class="pre">persistent_simplicialComplex_laplacian_dim0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_adjacency_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_adjacency_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_distance_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_dis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_by_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_vectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.persistent_simplicialComplex_laplacian_dim0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.persistent_simplicialComplex_laplacian_dim0" title="Link to this definition">¶</a></dt>
+<dd><p>Compute 0-dimensional (classical graph) Laplacian eigenvalues across a filtration.
+This is a simplified version of the persistent Laplacian pipeline that only uses:</p>
+<blockquote>
+<div><p>L = D - A</p>
+</div></blockquote>
+<p>where L is the graph Laplacian, D is the degree matrix, and A is the adjacency matrix.</p>
+<section id="id69">
+<h3>Parameters:<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>input_data<span class="classifier">np.ndarray</span></dt><dd><p>Either (N, D) point cloud coordinates or a (N, N) distance matrix, depending on <cite>is_distance_matrix</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_adjacency_matrix<span class="classifier">np.ndarray, optional</span></dt><dd><p>Binary mask matrix specifying maximum allowed connections (1 = allow edge).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>min_adjacency_matrix<span class="classifier">np.ndarray, optional</span></dt><dd><p>Binary mask matrix specifying forced connections (1 = must connect).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>is_distance_matrix<span class="classifier">bool</span></dt><dd><p>If True, <cite>input_data</cite> is treated as a distance matrix; otherwise, it’s treated as point cloud data.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_dim<span class="classifier">int</span></dt><dd><p>Maximum dimension for Laplacian eigenvalue reporting (here used for formatting/logging only).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filtration<span class="classifier">np.ndarray, optional</span></dt><dd><p>Array of filtration thresholds. If not provided, it will be generated from <cite>cutoff_distance</cite> and <cite>step_dis</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cutoff_distance<span class="classifier">float, optional</span></dt><dd><p>Maximum filtration threshold used to generate <cite>filtration</cite> if it is None.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>step_dis<span class="classifier">float, optional</span></dt><dd><p>Step size for distance threshold increments (used with <cite>cutoff_distance</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>print_by_step<span class="classifier">bool</span></dt><dd><p>If True, prints eigenvalues at each filtration step.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lattice_vectors<span class="classifier">np.ndarray, optional</span></dt><dd><p>Lattice basis vectors (D×D) for periodic boundary condition distance calculation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pbc<span class="classifier">list of bool, optional</span></dt><dd><p>Periodic boundary condition flags for each axis (e.g. [True, True, False]).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id70">
+<h3>Returns:<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>all_laplacian_features<span class="classifier">list of dict</span></dt><dd><p>List of dictionaries containing 0-dimensional Laplacian eigenvalues at each filtration step.
+Format: [{0: [eigvals]}, {0: [eigvals]}, …]</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.simplicialComplex_laplacian_from_connected_mat">
+<span class="sig-name descname"><span class="pre">simplicialComplex_laplacian_from_connected_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.simplicialComplex_laplacian_from_connected_mat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.simplicialComplex_laplacian_from_connected_mat" title="Link to this definition">¶</a></dt>
+<dd><p>Given the adjacency matrix of a connected graph, compute the eigenvalues of the Laplacian matrices
+for its corresponding simplicial complex.</p>
+<section id="id71">
+<h3>Parameters:<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>adjacency_matrix<span class="classifier">np.array</span></dt><dd><p>Adjacency matrix of the graph.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max_dim<span class="classifier">int </span></dt><dd><p>Maximum dimension of the Laplacian to compute.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id72">
+<h3>Returns:<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>laplacian_eigenv<span class="classifier">dict</span></dt><dd><p>Dictionary of eigenvalues keyed by dimension.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chem_topo.topo_features.SimplicialComplexLaplacian.utils_powersets">
+<span class="sig-name descname"><span class="pre">utils_powersets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/chem_topo/topo_features.html#SimplicialComplexLaplacian.utils_powersets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.SimplicialComplexLaplacian.utils_powersets" title="Link to this definition">¶</a></dt>
+<dd><p>Generate all subsets (up to a specified dimension) of a set of nodes.
+Returns a dictionary where keys represent the dimension and values are lists of node combinations.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chem_topo.topo_features.statistic_eigvalues">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chem_topo.topo_features.</span></span><span class="sig-name descname"><span class="pre">statistic_eigvalues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eigvalues</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#statistic_eigvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.statistic_eigvalues" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.topo_features.timeit">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.topo_features.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/topo_features.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.topo_features.timeit" title="Link to this definition">¶</a></dt>
+<dd><p>Timer decorator to print the execution time of the wrapped function.</p>
+</dd></dl>
+
+</section>
+<section id="module-chem_topo.utils">
+<span id="chem-topo-utils-module"></span><h2>chem_topo.utils module<a class="headerlink" href="#module-chem_topo.utils" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.calculate_atom_distance">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_atom_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#calculate_atom_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.calculate_atom_distance" title="Link to this definition">¶</a></dt>
+<dd><p>The function to calculated distance for dealing with periodicity</p>
+<section id="id73">
+<h3>Parameters:<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cell<span class="classifier">ndarray</span></dt><dd><p>The cell in input atoms.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>points1 , points2<span class="classifier">ndarray</span></dt><dd><p>The positions to calculate distance with periodicity</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id74">
+<h3>Returns:<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dis<span class="classifier">float</span></dt><dd><p>The periodic distance between two points.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.calculate_centroid">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#calculate_centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.calculate_centroid" title="Link to this definition">¶</a></dt>
+<dd><p>Finding the outer center (centroid) of atomic combinations.</p>
+<section id="id75">
+<h3>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>points<span class="classifier">ndarray</span></dt><dd><p>The Cartesian coordinates of atomic combinations.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cov_radii<span class="classifier">ndarray</span></dt><dd><p>The covalent radii of the atoms, used as weights for optimization.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>radius<span class="classifier">float</span></dt><dd><p>The target distance from the outer center to each point.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id76">
+<h3>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>coordinates of the centroid<span class="classifier">ndarray</span></dt><dd><p>The coordinates of the calculated centroid.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.calculate_distance">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#calculate_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.calculate_distance" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>The function to calculated distance </dt><dd><p>for dealing with periodicity</p>
+</dd>
+</dl>
+<section id="id77">
+<h3>Parameters:<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cell<span class="classifier">ndarray</span></dt><dd><p>The cell in input atoms.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>points1 , points2<span class="classifier">ndarray</span></dt><dd><p>The positions to calculate distance with periodicity</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id78">
+<h3>Returns:<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dis<span class="classifier">float</span></dt><dd><p>The periodic distance between two points.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.get_cutoffs">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">get_cutoffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metal_elements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#get_cutoffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.get_cutoffs" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate cutoff distances for atoms based on their types and a scaling multiplier.</p>
+<section id="id79">
+<h3>Parameters:<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>atoms<span class="classifier">ASE Atoms object</span></dt><dd><p>List of atoms in the structure.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>metal_elements<span class="classifier">list </span></dt><dd><p>List of elements considered as metals.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mult<span class="classifier">float </span></dt><dd><p>Scaling multiplier for the cutoff distances (default is 1.1).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id80">
+<h3>Returns:<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>cutoffs<span class="classifier">list of float</span></dt><dd><p>List of calculated cutoff distances.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.get_graph">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#get_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a graph representation of the atomic structure.</p>
+<section id="id81">
+<h3>Parameters:<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>atoms<span class="classifier">ASE Atoms object</span></dt><dd><p>The atomic structure to be converted into a graph.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id82">
+<h3>Returns:<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>graph<span class="classifier">networkx.Graph object</span></dt><dd><p>The generated graph of the atomic structure, representing atomic connectivity.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.is_unique">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">is_unique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_graphs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#is_unique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.is_unique" title="Link to this definition">¶</a></dt>
+<dd><p>Determine if the current input graph is unique</p>
+<section id="id83">
+<h3>Parameters:<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>graph<span class="classifier">networkx.Graph object</span></dt><dd><p>The graph for determining uniqueness</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>unique_graphs<span class="classifier">list of networkx.Graph objects</span></dt><dd><p>List of saved graphs to compare with the current graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.objective">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.objective" title="Link to this definition">¶</a></dt>
+<dd><p>This function calculates the difference between the distance from a point <cite>x</cite> 
+to a set of given points <cite>points</cite> and the target radius, weighted by <cite>weights</cite>,
+for use in least squares optimization.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.plane_normal">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">plane_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#plane_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.plane_normal" title="Link to this definition">¶</a></dt>
+<dd><p>Return the surface normal vector to a plane of best fit.</p>
+<section id="id84">
+<h3>Parameters:<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>xyz<span class="classifier">ndarray (n, 3)</span></dt><dd><p>3D points to fit the plane to.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id85">
+<h3>Returns:<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>vec<span class="classifier">ndarray (1, 3)</span></dt><dd><p>Unit vector normal to the plane of best fit.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.select_points">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">select_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#select_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.select_points" title="Link to this definition">¶</a></dt>
+<dd><p>This function is used to search for and select adsorption sites from a list of potential points.</p>
+<section id="id86">
+<h3>Parameters:<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>points<span class="classifier">list of ndarray</span></dt><dd><p>All possible potential sites from which adsorption points will be selected.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>num_points<span class="classifier">int</span></dt><dd><p>The number of adsorbents (points) to select.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>min_distance<span class="classifier">float</span></dt><dd><p>The minimum distance required between two neighboring adsorbents.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cell<span class="classifier">ndarray</span></dt><dd><p>The unit cell matrix of the input atomic structure.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pbc<span class="classifier">ndarray</span></dt><dd><p>The periodic boundary conditions (True or False for each direction).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id87">
+<h3>Returns:<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>selected_points<span class="classifier">list of ndarray</span></dt><dd><p>A list of selected adsorption points that satisfy the distance criteria.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chem_topo.utils.wl">
+<span class="sig-prename descclassname"><span class="pre">chem_topo.utils.</span></span><span class="sig-name descname"><span class="pre">wl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem_topo/utils.html#wl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chem_topo.utils.wl" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an input graph into a Weisfeiler-Lehman (WL) graph by performing a WL conversion.</p>
+<section id="id88">
+<h3>Parameters:<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>graph<span class="classifier">networkx.Graph object</span></dt><dd><p>The input graph to be converted.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id89">
+<h3>Returns:<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>new_graph<span class="classifier">networkx.Graph object</span></dt><dd><p>The transformed graph after applying the Weisfeiler-Lehman algorithm.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-chem_topo">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-chem_topo" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -112,7 +1895,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, zheng shisheng , zhang ximing , liu hengshu , liang gehao.</p>
+    <p>&#169; Copyright 2025, zheng shisheng , zhang ximing ,liu hengshu , liang gehao.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

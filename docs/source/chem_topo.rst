@@ -4,7 +4,7 @@ chem\_topo package
 Submodules
 ----------
 
-adsorption\_sites module
+chem\_topo.adsorption\_sites module
 -----------------------------------
 
 .. automodule:: chem_topo.adsorption_sites
@@ -12,7 +12,7 @@ adsorption\_sites module
    :show-inheritance:
    :undoc-members:
 
-persistent\_path\_homology\_cli module
+chem\_topo.persistent\_path\_homology\_cli module
 -------------------------------------------------
 
 .. automodule:: chem_topo.persistent_path_homology_cli
@@ -20,7 +20,7 @@ persistent\_path\_homology\_cli module
    :show-inheritance:
    :undoc-members:
 
-post\_process module
+chem\_topo.post\_process module
 -------------------------------
 
 .. automodule:: chem_topo.post_process
@@ -28,7 +28,7 @@ post\_process module
    :show-inheritance:
    :undoc-members:
 
-topo\_features module
+chem\_topo.topo\_features module
 --------------------------------
 
 .. automodule:: chem_topo.topo_features
@@ -36,7 +36,7 @@ topo\_features module
    :show-inheritance:
    :undoc-members:
 
-utils module
+chem\_topo.utils module
 -----------------------
 
 .. automodule:: chem_topo.utils
@@ -44,4 +44,10 @@ utils module
    :show-inheritance:
    :undoc-members:
 
+Module contents
+---------------
 
+.. automodule:: chem_topo
+   :members:
+   :show-inheritance:
+   :undoc-members:
