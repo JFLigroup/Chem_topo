@@ -6,3 +6,4 @@ ase
 scipy
 gudhi
 homcloud
+networkx
