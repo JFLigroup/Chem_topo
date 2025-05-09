@@ -1,4 +1,4 @@
-from topo_features import PathHomology
+from .topo_features import PathHomology
 import numpy as np
 import argparse
 import sys
