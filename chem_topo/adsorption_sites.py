@@ -544,7 +544,6 @@ class SlabAdsorptionsSitesFinder():
         - both_surface : bool , default False
                 Input whether sites generation is performed on both the upper and 
                 lower surfaces; when the input is False, only the upper surface is output.
-a
         """
         def __init__(self,atoms,
                         adsorbate_elements=[],
